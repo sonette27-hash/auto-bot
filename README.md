@@ -44,11 +44,11 @@ def create_order(order_type, quantity, action):
 
 if __name__ == "__main__":
     # Connect to the Trader Workstation (TWS) running on the
-    # usual port of 7496, with a clientId of 100
+    # usual port of 7497, with a clientId of 100
     # (The clientId is chosen by us and we will need 
     # separate IDs for both the execution connection and
     # market data connection)
-    tws_conn = Connection.create(port=7496, clientId=100)
+    tws_conn = Connection.create(port=7497, clientId=100)
     tws_conn.connect()
 
     # Assign the error handling function defined above
