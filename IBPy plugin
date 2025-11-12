@@ -46,36 +46,4 @@ def create_order(order_type, quantity, action):
     order.m_action = action
     return order
 
-    # ib_api_demo.py
-
-if __name__ == "__main__":
-    # Connect to the Trader Workstation (TWS) running on the
-    # usual port of 7497, with a clientId of 100
-    # (The clientId is chosen by us and we will need 
-    # separate IDs for both the execution connection and
-    # market data connection)
-    tws_conn = Connection.create(port=7497, clientId=100)
-    tws_conn.connect()
-
-    # Assign the error handling function defined above
-    # to the TWS connection
-    tws_conn.register(error_handler, 'Error')
-
-    # Assign all of the server reply messages to the
-    # reply_handler function defined above
-    tws_conn.registerAll(reply_handler)
-
-    # Create an order ID which is 'global' for this session. This
-    # will need incrementing once new orders are submitted.
-    order_id = 1
-
-    # Create a contract in GOOG stock via SMART order routing
-    goog_contract = create_contract('GOOG', 'STK', 'SMART', 'SMART', 'USD')
-
-    # Go long 100 shares of Google
-    goog_order = create_order('MKT', 100, 'BUY')
-
-    # Use the connection to the send the order to IB
-    tws_conn.placeOrder(order_id, goog_contract, goog_order)
-
-    
+   
