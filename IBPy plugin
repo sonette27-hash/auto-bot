@@ -1,0 +1,4 @@
+sudo apt-get install git-core
+mkdir ~/ibapi
+cd ~/ibapi
+git clone https://github.com/blampe/IbPy
