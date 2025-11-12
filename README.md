@@ -67,4 +67,4 @@ if __name__ == "__main__":
     # Disconnect from TWS
     tws_conn.disconnect()
 python ib_api_demo.py  
-main
+
