@@ -55,7 +55,7 @@ Write-Info "================================"
 Write-Info "`n[1/5] Checking Python..."
 try {
     $PythonVersion = & $PythonExe --version 2>&1
-    Write-Success "✓ Python found: $PythonVersion"
+    Write-Success "[OK] Python found: $PythonVersion"
 } catch {
     Write-Error-Custom "Python executable not found at '$PythonExe'. Make sure Python is installed and on PATH."
     exit 1
@@ -73,7 +73,7 @@ if (Test-Path $VenvPath) {
         if ($LASTEXITCODE -ne 0) {
             throw "venv creation failed with exit code $LASTEXITCODE"
         }
-        Write-Success "✓ Virtual environment created at '$VenvPath'"
+        Write-Success "[OK] Virtual environment created at '$VenvPath'"
     } catch {
         Write-Error-Custom "Failed to create virtual environment: $_"
         exit 1
@@ -90,7 +90,7 @@ if (-not (Test-Path $ActivateScript)) {
 
 try {
     & $ActivateScript
-    Write-Success "✓ Virtual environment activated"
+    Write-Success "[OK] Virtual environment activated"
 } catch {
     Write-Error-Custom "Failed to activate virtual environment: $_"
     exit 1
@@ -117,15 +117,15 @@ try {
     Write-Info "   Attempting: python setup.py install"
     $setupOutput = & python setup.py install 2>&1
     
-    if ($LASTEXITCODE -eq 0) {
-        Write-Success "✓ Package installed (setup.py)"
-    } else {
+    if ($LASTEXITCODE -ne 0) {
         Write-Warning-Custom "setup.py install returned exit code $LASTEXITCODE. Trying: pip install ."
         & python -m pip install . 2>&1 | Out-Null
         if ($LASTEXITCODE -ne 0) {
             throw "Both installation methods failed. Try in a venv with Python 3.8-3.11 (Python 3.12+ removed distutils)."
         }
-        Write-Success "✓ Package installed (pip)"
+        Write-Success "[OK] Package installed (pip)"
+    } else {
+        Write-Success "[OK] Package installed (setup.py)"
     }
     
     Pop-Location
@@ -139,7 +139,7 @@ Write-Info "`n[5/5] Verifying installation..."
 try {
     $VerifyOutput = python -c "from ib.opt import Connection; print('IbPy import OK')" 2>&1
     if ($VerifyOutput -match "IbPy import OK") {
-        Write-Success "✓ IbPy import verified"
+        Write-Success "[OK] IbPy import verified"
     } else {
         Write-Error-Custom "Import verification failed: $VerifyOutput"
         exit 1
@@ -150,7 +150,7 @@ try {
 }
 
 # ========== SUMMARY ==========
-Write-Success "`n✓ Environment setup complete!"
+Write-Success "`n[COMPLETE] Environment setup finished!"
 Write-Info "`nEnvironment Info:"
 Write-Info "  Python: $(& python --version)"
 Write-Info "  Venv: $VenvPath"
@@ -176,10 +176,10 @@ try {
     
     & python demo\ib_api_demo.py
     if ($LASTEXITCODE -eq 0) {
-        Write-Success "`n✓ Dry-run test PASSED"
+        Write-Success "`n[OK] Dry-run test PASSED"
         Write-Info "`nNext steps:"
         Write-Info "  1. Start Trader Workstation (TWS) or IB Gateway"
-        Write-Info "  2. Enable API in TWS: Configure → API → Enable Socket Clients on port 7496"
+        Write-Info "  2. Enable API in TWS: Configure -> API -> Enable Socket Clients on port 7496"
         Write-Info "  3. Run live demo: python demo\ib_api_demo.py"
         Write-Info ""
         Write-Info "For detailed instructions, see: extracted\IbPy2-0.8.0\QUICK_START.md"
@@ -192,4 +192,4 @@ try {
     exit 1
 }
 
-Write-Success "`n✓ All setup steps completed successfully!"
+Write-Success "`n[DONE] All setup steps completed successfully!"
