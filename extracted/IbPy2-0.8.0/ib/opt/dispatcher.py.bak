@@ -5,13 +5,12 @@
 # Defines Dispatcher class to send messages to registered listeners.
 #
 ##
-from __future__ import absolute_import
 try:
     # Python 3
     from queue import Queue, Empty
 except ImportError:
     # Python 2 fallback
-    from six.moves.queue import Queue, Empty
+    from Queue import Queue, Empty
 
 from ib.lib import maybeName, logger
 from ib.opt import message
